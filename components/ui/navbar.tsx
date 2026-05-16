@@ -9,8 +9,8 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const NAV_LINKS = [
   { label: "How it works", href: "#how-it-works" },
+  { label: "Templates",    href: "/app/templates" },
   { label: "Use cases",    href: "#use-cases" },
-  { label: "Examples",     href: "#examples" },
   { label: "Pricing",      href: "#pricing" },
 ];
 

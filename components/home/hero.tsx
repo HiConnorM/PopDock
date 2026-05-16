@@ -1,32 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
-import { ArrowUpRight, Check, Storefront, TShirt, PaintBrush, Coffee } from "@phosphor-icons/react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Check } from "@phosphor-icons/react";
 import { EASE_OUT_EXPO } from "@/lib/motion";
 
-const POPUP_TYPES = [
-  { icon: TShirt,    label: "Vintage Booth",  color: "#D2DCF0", accent: "#3D5A8A" },
-  { icon: PaintBrush, label: "Artist Alley",  color: "#DDE5D2", accent: "#6B7C52" },
-  { icon: Coffee,    label: "Coffee Cart",    color: "#F5E9C8", accent: "#8B6A1A" },
-  { icon: Storefront, label: "Craft Fair",   color: "#F5E0D5", accent: "#C97B5A" },
+const STYLE_CHIPS = [
+  "Vintage Market",
+  "Artist Alley",
+  "Coffee Cart",
+  "Craft Fair",
+  "Food Popup",
 ];
 
-const CHECKLIST_ITEMS = [
-  "Setup checklist",
-  "Shopping list",
-  "Booth layout",
-  "Launch timeline",
-  "Pricing guide",
-  "Signage ideas",
-];
-
-const SOCIAL_PROOF = [
-  { name: "Mira Okafor",     role: "Vintage reseller, Chicago",   img: "64/1" },
-  { name: "Tomás Reyes",     role: "Artist alley, Portland",      img: "65/1" },
-  { name: "Yuki Tanaka",     role: "Craft fair maker, Austin",    img: "66/1" },
-];
+const PLACEHOLDER =
+  "I'm selling vintage denim at a weekend flea market with a $400 budget and a warm, handmade aesthetic.";
 
 const container: Variants = {
   hidden: {},
@@ -35,13 +24,15 @@ const container: Variants = {
 
 const item: Variants = {
   hidden: { opacity: 0, y: 20 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_OUT_EXPO } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: EASE_OUT_EXPO } },
 };
 
 export function Hero() {
+  const [idea, setIdea] = useState("");
+
   return (
     <section className="relative min-h-[100dvh] flex items-center overflow-hidden">
-      {/* Background dot grid — static, no scroll cost */}
+      {/* Dot grid */}
       <div className="dot-grid absolute inset-0 opacity-60 pointer-events-none" />
 
       {/* Warm gradient wash */}
@@ -53,202 +44,211 @@ export function Hero() {
         }}
       />
 
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10 w-full pt-24 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_480px] xl:grid-cols-[1fr_540px] gap-12 xl:gap-20 items-center">
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 w-full pt-28 pb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_500px] xl:grid-cols-[1fr_560px] gap-12 xl:gap-20 items-center">
 
-          {/* ─── LEFT: Copy ─── */}
+          {/* ─── LEFT ─── */}
           <motion.div
             variants={container}
             initial="hidden"
             animate="show"
             className="flex flex-col gap-6 max-w-[640px]"
           >
-            {/* Eyebrow badge */}
+            {/* Eyebrow */}
             <motion.div variants={item}>
               <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-[#6B6560] bg-[#EDE9E4] border border-[#DDD8D2] px-3 py-1.5 rounded-full">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#C63D2F] animate-pulse" />
-                Now in early access
+                The creation studio for real-world popups
               </span>
             </motion.div>
 
             {/* Headline */}
             <motion.h1
               variants={item}
-              className="text-[52px] md:text-[68px] xl:text-[80px] font-black leading-[0.95] tracking-[-0.04em] text-[#1A1916]"
+              className="text-[52px] md:text-[68px] xl:text-[76px] font-black leading-[0.95] tracking-[-0.04em] text-[#1A1916]"
             >
-              Launch your<br />
-              <span className="text-[#C63D2F]">popup</span><br />
-              without the<br />
-              chaos.
+              Turn your idea into<br />
+              a real-world popup kit.
             </motion.h1>
 
             {/* Sub */}
             <motion.p
               variants={item}
-              className="text-lg md:text-xl text-[#6B6560] leading-relaxed max-w-[480px]"
+              className="text-lg md:text-xl text-[#6B6560] leading-relaxed max-w-[520px]"
             >
-              From vintage markets to artist alleys — Popdock builds your complete popup launch kit. Setup plans, shopping lists, booth layouts, and timelines. Everything you need to actually show up ready.
+              Enter your popup idea. Get a complete launch kit — booth design, signage, checklist, shopping list, and print materials. All specific to your type, budget, and aesthetic.
             </motion.p>
 
-            {/* CTA row */}
-            <motion.div variants={item} className="flex flex-wrap items-center gap-3 pt-2">
-              <Link href="/onboarding">
-                <Button size="lg">
-                  Build my popup kit
-                  <ArrowUpRight size={16} weight="bold" />
-                </Button>
-              </Link>
-              <Link href="#examples">
-                <Button size="lg" variant="secondary">
-                  See examples
-                </Button>
+            {/* Generator input card */}
+            <motion.div
+              variants={item}
+              className="bg-[#FDFAF7] border border-[#DDD8D2] rounded-[18px] p-4 shadow-[var(--shadow-md)] flex flex-col gap-3"
+            >
+              <label className="text-xs font-semibold text-[#9E9890] uppercase tracking-widest">
+                Describe your popup idea:
+              </label>
+              <textarea
+                rows={3}
+                value={idea}
+                onChange={(e) => setIdea(e.target.value)}
+                placeholder={PLACEHOLDER}
+                className="w-full bg-transparent text-[15px] text-[#1A1916] placeholder:text-[#C5BEB6] resize-none outline-none leading-relaxed"
+              />
+
+              {/* Quick-pick chips */}
+              <div className="flex flex-wrap gap-2">
+                {STYLE_CHIPS.map((chip) => (
+                  <button
+                    key={chip}
+                    type="button"
+                    onClick={() => setIdea(chip)}
+                    className="text-xs font-semibold px-3 py-1.5 rounded-full border border-[#DDD8D2] bg-[#F5F2EE] text-[#6B6560] hover:border-[#C63D2F] hover:text-[#C63D2F] hover:bg-[#FDF1F0] transition-all press"
+                  >
+                    {chip}
+                  </button>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <Link href="/onboarding" className="w-full">
+                <button
+                  type="button"
+                  className="w-full inline-flex items-center justify-center gap-2 bg-[#C63D2F] text-[#FDFAF7] font-semibold text-base px-6 py-3 rounded-[10px] border border-[#9B2F24] shadow-[0_2px_0_0_#9B2F24,0_4px_12px_rgba(198,61,47,0.20)] hover:bg-[#B5362A] hover:-translate-y-px transition-all press"
+                >
+                  Generate my kit
+                  <ArrowRight size={18} weight="bold" />
+                </button>
               </Link>
             </motion.div>
 
             {/* Trust line */}
-            <motion.div variants={item} className="flex items-center gap-4 pt-2">
-              <div className="flex -space-x-2">
-                {SOCIAL_PROOF.map((p) => (
-                  <img
-                    key={p.name}
-                    src={`https://picsum.photos/seed/${p.img}/40/40`}
-                    alt={p.name}
-                    className="w-8 h-8 rounded-full border-2 border-[#F5F2EE] object-cover"
-                  />
-                ))}
-              </div>
-              <p className="text-sm text-[#6B6560]">
-                <span className="font-semibold text-[#1A1916]">2,300+</span> creators launched with Popdock
-              </p>
-            </motion.div>
+            <motion.p variants={item} className="text-sm text-[#9E9890]">
+              2,300+ creators launched with Popdock • Free to start
+            </motion.p>
           </motion.div>
 
-          {/* ─── RIGHT: Interactive popup kit preview ─── */}
+          {/* ─── RIGHT: Animated kit preview cards ─── */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-            className="relative"
+            transition={{ duration: 0.7, delay: 0.25, ease: EASE_OUT_EXPO }}
+            className="relative h-[460px] hidden lg:block"
           >
-            <KitPreviewCard />
+            <KitPreviewCards />
           </motion.div>
+
         </div>
       </div>
     </section>
   );
 }
 
-function KitPreviewCard() {
+function KitPreviewCards() {
   return (
-    <div className="relative">
-      {/* Main card */}
-      <div className="bg-[#FDFAF7] border border-[#DDD8D2] rounded-[20px] shadow-[var(--shadow-xl)] overflow-hidden">
-        {/* Header */}
-        <div className="px-5 py-4 border-b border-[#EDE9E4] flex items-center justify-between">
+    <div className="relative w-full h-full">
+
+      {/* Card 1 — Main "Your Popup Kit" app window */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.65, ease: EASE_OUT_EXPO }}
+        className="absolute top-8 left-0 right-0 bg-[#FDFAF7] border border-[#DDD8D2] rounded-[20px] shadow-[var(--shadow-xl)] overflow-hidden"
+      >
+        {/* Traffic-light header */}
+        <div className="px-5 py-3.5 border-b border-[#EDE9E4] flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="flex gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-[#F0D5D2]" />
-              <div className="w-2.5 h-2.5 rounded-full bg-[#F5E9C8]" />
-              <div className="w-2.5 h-2.5 rounded-full bg-[#DDE5D2]" />
+              <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" />
+              <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
+              <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
             </div>
             <span className="text-xs font-semibold text-[#9E9890] ml-2">Your Popup Kit</span>
           </div>
-          <span className="text-[10px] font-bold uppercase tracking-widest text-[#C63D2F] bg-[#F0D5D2] px-2 py-0.5 rounded-full">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-[#27A84A] bg-[#DDE5D2] px-2.5 py-0.5 rounded-full">
             Ready
           </span>
         </div>
 
-        {/* Content */}
+        {/* Kit content */}
         <div className="p-5 flex flex-col gap-4">
-          {/* Popup type selector */}
           <div>
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-[#9E9890] mb-2">Popup type</p>
-            <div className="grid grid-cols-2 gap-2">
-              {POPUP_TYPES.map((type, i) => (
-                <motion.div
-                  key={type.label}
-                  initial={{ opacity: 0, scale: 0.92 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.4 + i * 0.08, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-                  className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border cursor-pointer transition-all ${i === 0 ? "border-[#C63D2F] bg-[#FDF8F7]" : "border-[#EDE9E4] bg-[#F5F2EE] hover:border-[#DDD8D2]"}`}
-                >
-                  <div
-                    className="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
-                    style={{ backgroundColor: type.color }}
-                  >
-                    <type.icon size={14} color={type.accent} weight="bold" />
-                  </div>
-                  <span className="text-xs font-semibold text-[#1A1916]">{type.label}</span>
-                </motion.div>
-              ))}
-            </div>
+            <p className="text-base font-bold text-[#1A1916]">Vintage Flea Market</p>
+            <p className="text-xs text-[#9E9890] mt-0.5">Generated kit · June 14</p>
           </div>
 
-          {/* Checklist preview */}
-          <div>
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-[#9E9890] mb-2">Setup checklist</p>
-            <div className="flex flex-col gap-1.5">
-              {CHECKLIST_ITEMS.map((it, i) => (
-                <motion.div
-                  key={it}
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.55 + i * 0.07, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-                  className="flex items-center gap-2.5"
-                >
-                  <div
-                    className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${i < 4 ? "bg-[#C63D2F]" : "border border-[#DDD8D2] bg-[#F5F2EE]"}`}
-                  >
-                    {i < 4 && <Check size={9} color="white" weight="bold" />}
-                  </div>
-                  <span
-                    className={`text-sm ${i < 4 ? "text-[#6B6560] line-through" : "text-[#1A1916] font-medium"}`}
-                  >
-                    {it}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
+          <div className="flex flex-col gap-2">
+            {[
+              { label: "Booth layout generated", icon: true },
+              { label: "34-item shopping list", icon: true },
+              { label: "6 signage pieces", icon: true },
+            ].map((it) => (
+              <div key={it.label} className="flex items-center gap-2.5">
+                <div className="w-4 h-4 rounded-full bg-[#C63D2F] flex items-center justify-center flex-shrink-0">
+                  <Check size={9} color="white" weight="bold" />
+                </div>
+                <span className="text-sm font-medium text-[#4A4540]">{it.label}</span>
+              </div>
+            ))}
           </div>
 
-          {/* Progress bar */}
+          {/* Progress bar at 78% */}
           <div>
             <div className="flex justify-between items-center mb-1.5">
               <p className="text-[10px] font-semibold uppercase tracking-widest text-[#9E9890]">Kit completion</p>
-              <span className="text-xs font-bold text-[#C63D2F]">67%</span>
+              <span className="text-xs font-bold text-[#C63D2F]">78%</span>
             </div>
             <div className="h-1.5 bg-[#EDE9E4] rounded-full overflow-hidden">
               <motion.div
                 className="h-full bg-[#C63D2F] rounded-full"
                 initial={{ width: 0 }}
-                animate={{ width: "67%" }}
-                transition={{ delay: 0.9, duration: 0.8, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
+                animate={{ width: "78%" }}
+                transition={{ delay: 1.0, duration: 0.9, ease: EASE_OUT_EXPO }}
               />
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Floating accent cards */}
+      {/* Card 2 — Price card (bottom-left, rotated) */}
       <motion.div
-        initial={{ opacity: 0, y: 12, rotate: -2 }}
+        initial={{ opacity: 0, y: 20, rotate: -1 }}
         animate={{ opacity: 1, y: 0, rotate: -3 }}
-        transition={{ delay: 0.7, duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-        className="absolute -bottom-5 -left-8 bg-[#F5E9C8] border border-[#D4A843]/30 rounded-xl px-4 py-3 shadow-[var(--shadow-md)] max-w-[180px]"
+        transition={{ delay: 0.65, duration: 0.6, ease: EASE_OUT_EXPO }}
+        className="absolute -bottom-4 -left-6 bg-[#F5E9C8] border border-[#D4A843]/30 rounded-[16px] px-4 py-3.5 shadow-[var(--shadow-lg)] w-[190px]"
       >
-        <p className="text-[10px] font-bold uppercase tracking-widest text-[#8B6A1A] mb-0.5">Shopping list</p>
-        <p className="text-xs font-semibold text-[#4A4540]">47 items · ~$312 est.</p>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-[#8B6A1A] mb-2">Price Card</p>
+        <div className="flex flex-col gap-1">
+          {[
+            { price: "$18", label: "Vintage Levi's" },
+            { price: "$12", label: "Band Tees" },
+            { price: "$24", label: "Denim Jackets" },
+          ].map((row) => (
+            <div key={row.label} className="flex justify-between items-baseline">
+              <span className="text-xs font-bold text-[#4A4540]">{row.price}</span>
+              <span className="text-[11px] text-[#8B6A1A]">{row.label}</span>
+            </div>
+          ))}
+        </div>
       </motion.div>
 
+      {/* Card 3 — Checklist (top-right, rotated) */}
       <motion.div
-        initial={{ opacity: 0, y: -12, rotate: 2 }}
+        initial={{ opacity: 0, y: -16, rotate: 1 }}
         animate={{ opacity: 1, y: 0, rotate: 3 }}
-        transition={{ delay: 0.85, duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-        className="absolute -top-4 -right-6 bg-[#DDE5D2] border border-[#6B7C52]/30 rounded-xl px-4 py-3 shadow-[var(--shadow-md)] max-w-[180px]"
+        transition={{ delay: 0.8, duration: 0.6, ease: EASE_OUT_EXPO }}
+        className="absolute -top-5 -right-4 bg-[#DDE5D2] border border-[#6B7C52]/25 rounded-[16px] px-4 py-3.5 shadow-[var(--shadow-lg)] w-[185px]"
       >
-        <p className="text-[10px] font-bold uppercase tracking-widest text-[#6B7C52] mb-0.5">Launch day</p>
-        <p className="text-xs font-semibold text-[#4A4540]">June 14 · Riverside Market</p>
+        <p className="text-[10px] font-bold uppercase tracking-widest text-[#6B7C52] mb-2">Checklist</p>
+        <div className="flex flex-col gap-1.5">
+          {["Folding table", "Extension cord", "Square reader"].map((it) => (
+            <div key={it} className="flex items-center gap-2">
+              <Check size={11} color="#6B7C52" weight="bold" />
+              <span className="text-xs font-semibold text-[#4A4540]">{it}</span>
+            </div>
+          ))}
+        </div>
       </motion.div>
+
     </div>
   );
 }
