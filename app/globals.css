@@ -1,26 +1,182 @@
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700,800,900&f[]=cabinet-grotesk@400,500,600,700,800,900&display=swap");
+
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ─────────────────────────────────────────
+   POPDOCK DESIGN TOKENS
+   Creative Operational Realism
+   DESIGN_VARIANCE: 8 | MOTION: 6 | DENSITY: 4
+───────────────────────────────────────── */
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Background layers */
+  --color-bg-base:     #F5F2EE;
+  --color-bg-surface:  #FDFAF7;
+  --color-bg-elevated: #FFFFFF;
+  --color-bg-inset:    #EDE9E4;
+
+  /* Text */
+  --color-text-primary:   #1A1916;
+  --color-text-secondary: #6B6560;
+  --color-text-tertiary:  #9E9890;
+
+  /* Accent — Tomato Red */
+  --color-accent:       #C63D2F;
+  --color-accent-light: #F0D5D2;
+  --color-accent-dark:  #9B2F24;
+
+  /* Secondary accents */
+  --color-cobalt:        #3D5A8A;
+  --color-cobalt-light:  #D2DCF0;
+  --color-olive:         #6B7C52;
+  --color-olive-light:   #DDE5D2;
+  --color-butter:        #D4A843;
+  --color-butter-light:  #F5E9C8;
+  --color-coral:         #C97B5A;
+
+  /* Neutrals */
+  --color-n100: #F5F2EE;
+  --color-n200: #EDE9E4;
+  --color-n300: #DDD8D2;
+  --color-n400: #C5BEB6;
+  --color-n500: #9E9890;
+  --color-n600: #6B6560;
+  --color-n700: #4A4540;
+  --color-n800: #2D2A26;
+  --color-n900: #1A1916;
+
+  /* Typography */
+  --font-sans: 'Satoshi', 'Cabinet Grotesk', system-ui, sans-serif;
+  --font-mono: 'GeistMono', 'JetBrains Mono', monospace;
+
+  /* Radii */
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  16px;
+  --radius-xl:  24px;
+  --radius-2xl: 36px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+  --shadow-sm:  0 1px 3px rgba(26,25,22,0.06), 0 1px 2px rgba(26,25,22,0.04);
+  --shadow-md:  0 4px 12px rgba(26,25,22,0.08), 0 2px 4px rgba(26,25,22,0.05);
+  --shadow-lg:  0 12px 40px rgba(26,25,22,0.10), 0 4px 8px rgba(26,25,22,0.06);
+  --shadow-xl:  0 24px 60px rgba(26,25,22,0.12), 0 8px 16px rgba(26,25,22,0.08);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-family: var(--font-sans);
+  background-color: #F5F2EE;
+  color: #1A1916;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background-color: #F5F2EE;
+}
+
+h1,h2,h3,h4,h5,h6 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+/* ─── NOISE OVERLAY (fixed, no scroll repaint) ─── */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px;
+  mix-blend-mode: multiply;
+}
+
+/* ─── MARQUEE ─── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee       { animation: marquee 30s linear infinite; will-change: transform; }
+.animate-marquee-slow  { animation: marquee 50s linear infinite; will-change: transform; }
+
+/* ─── STAGGER REVEAL ─── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up   { animation: fadeInUp 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+.delay-1   { animation-delay: 0.08s; }
+.delay-2   { animation-delay: 0.16s; }
+.delay-3   { animation-delay: 0.26s; }
+.delay-4   { animation-delay: 0.38s; }
+.delay-5   { animation-delay: 0.52s; }
+
+/* ─── SKELETON ─── */
+@keyframes shimmer {
+  from { background-position: -200% center; }
+  to   { background-position:  200% center; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #EDE9E4 25%, #F5F2EE 50%, #EDE9E4 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+/* ─── DOT GRID ─── */
+.dot-grid {
+  background-image: radial-gradient(circle, #DDD8D2 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+/* ─── PRESS EFFECT ─── */
+.press { transition: transform 0.12s cubic-bezier(0.16,1,0.3,1); }
+.press:active { transform: scale(0.97) translateY(1px); }
+
+/* ─── SPOTLIGHT BORDER CARD ─── */
+.spotlight {
+  position: relative;
+  overflow: hidden;
+}
+.spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    320px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(198,61,47,0.07),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.35s cubic-bezier(0.16,1,0.3,1);
+  pointer-events: none;
+  z-index: 0;
+}
+.spotlight:hover::before { opacity: 1; }
+
+/* ─── SCROLL INDICATOR ─── */
+.scroll-bar {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  background: #C63D2F;
+  z-index: 1000;
+  transform-origin: left;
+}
+
+/* ─── SELECTION ─── */
+::selection {
+  background: rgba(198, 61, 47, 0.18);
+  color: #1A1916;
 }
